@@ -8,12 +8,12 @@ var app = {
   prdPath: 'dist/'
 };
 
-// gulp.task('lib', function() {
-//   gulp.src('bower_components/**/*.js')
-//   .pipe(gulp.dest(app.devPath + 'vendor'))
-//   .pipe(gulp.dest(app.prdPath + 'vendor'))
-//   .pipe($.connect.reload());
-// });
+gulp.task('lib', function() {
+  gulp.src('node_modules/**/*.js')
+  .pipe(gulp.dest(app.devPath + 'vendor'))
+  .pipe(gulp.dest(app.prdPath + 'vendor'))
+  .pipe($.connect.reload());
+});
 
 gulp.task('html', function() {
   gulp.src(app.srcPath + '**/*.html')
@@ -40,33 +40,33 @@ gulp.task('less', function() {
   .pipe($.connect.reload());
 });
 
-gulp.task('js', function() {
-  gulp.src(app.srcPath + 'script/**/*.js')
-  .pipe($.plumber())
-  .pipe($.concat('index.js'))
-  .pipe(gulp.dest(app.devPath + 'js'))
-  .pipe($.uglify())
-  .pipe(gulp.dest(app.prdPath + 'js'))
-  .pipe($.connect.reload());
-});
+// gulp.task('js', function() {
+//   gulp.src(app.srcPath + 'script/**/*.js')
+//   .pipe($.plumber())
+//   .pipe($.concat('index.js'))
+//   .pipe(gulp.dest(app.devPath + 'js'))
+//   .pipe($.uglify())
+//   .pipe(gulp.dest(app.prdPath + 'js'))
+//   .pipe($.connect.reload());
+// });
 
-gulp.task('image', function() {
-  gulp.src(app.srcPath + 'image/**/*')
-  .pipe($.plumber())
-  .pipe(gulp.dest(app.devPath + 'image'))
-  .pipe($.imagemin())
-  .pipe(gulp.dest(app.prdPath + 'image'))
-  .pipe($.connect.reload());
-});
+// gulp.task('image', function() {
+//   gulp.src(app.srcPath + 'image/**/*')
+//   .pipe($.plumber())
+//   .pipe(gulp.dest(app.devPath + 'image'))
+//   .pipe($.imagemin())
+//   .pipe(gulp.dest(app.prdPath + 'image'))
+//   .pipe($.connect.reload());
+// });
 
-gulp.task('build', ['image', 'js', 'less', 'html', 'json']);
+gulp.task('build', ['html', 'json']);
 
 gulp.task('clean', function() {
   gulp.src([app.devPath, app.prdPath])
   .pipe($.clean());
 });
 
-gulp.task('serve', ['build'], function() {
+gulp.task('serve', function() {
   $.connect.server({
     root: [app.devPath],
     livereload: true,
@@ -74,6 +74,7 @@ gulp.task('serve', ['build'], function() {
   });
 
   open('http://localhost:3000');
+  // gulp.watch('bower_components/**/*', ['lib']);
   gulp.watch(app.srcPath + '**/*.html', ['html']);
   gulp.watch(app.srcPath + 'data/**/*.json', ['json']);
   gulp.watch(app.srcPath + 'style/**/*.less', ['less']);
